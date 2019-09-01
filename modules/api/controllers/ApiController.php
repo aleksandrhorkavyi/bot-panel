@@ -12,10 +12,11 @@ class ApiController extends Controller
 {
     public function actionTokens()
     {
-        return Yii::$app->telegram->sendMessage([
+         Yii::$app->telegram->sendMessage([
             'chat_id' => '354632391',
             'text' => 'test',
         ]);
+
         return $this->asJson(['status' => 'ok']);
     }
 
