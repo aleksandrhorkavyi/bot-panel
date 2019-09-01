@@ -10,6 +10,8 @@ use yii\web\Controller;
  */
 class ApiController extends Controller
 {
+    public $enableCsrfValidation = false;
+
     public function actionTokens()
     {
          Yii::$app->telegram->sendMessage([
