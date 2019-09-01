@@ -1,99 +1,31 @@
-[
-  {
-    "update_id": 637453343,
-    "message": {
-      "message_id": 21,
-      "from": {
-        "id": 354632391,
-        "is_bot": false,
-        "first_name": "Oleksandr",
-        "language_code": "en"
-      },
-      "chat": {
-        "id": 354632391,
-        "first_name": "Oleksandr",
-        "type": "private"
-      },
-      "date": 1567364774,
-      "text": "df"
-    }
+{
+  "text": "/mat",
+  "message": {
+    "message_id": 85,
+    "from": {
+      "id": 354632391,
+      "is_bot": false,
+      "first_name": "Oleksandr",
+      "language_code": "en"
+    },
+    "chat": {
+      "id": -366413611,
+      "title": "PHP",
+      "type": "group",
+      "all_members_are_administrators": true
+    },
+    "date": 1567368065,
+    "text": "/mat",
+    "entities": [
+      {
+        "offset": 0,
+        "length": 4,
+        "type": "bot_command"
+      }
+    ]
   },
-  {
-    "update_id": 637453351,
-    "message": {
-      "message_id": 37,
-      "from": {
-        "id": 354632391,
-        "is_bot": false,
-        "first_name": "Oleksandr",
-        "language_code": "en"
-      },
-      "chat": {
-        "id": -366413611,
-        "title": "PHP",
-        "type": "group",
-        "all_members_are_administrators": true
-      },
-      "date": 1567365770,
-      "text": "/gggfgfg",
-      "entities": [
-        {
-          "offset": 0,
-          "length": 8,
-          "type": "bot_command"
-        }
-      ]
-    }
-  },
-
-
-
-
-
-
-
-
-
-
-
-
-  {
-    "update_id": 637453347,
-    "message": {
-      "message_id": 29,
-      "from": {
-        "id": 354632391,
-        "is_bot": false,
-        "first_name": "Oleksandr",
-        "language_code": "en"
-      },
-      "chat": {
-        "id": -366413611,
-        "title": "PHP",
-        "type": "group",
-        "all_members_are_administrators": true
-      },
-      "date": 1567365590,
-      "new_chat_participant": {
-        "id": 891364201,
-        "is_bot": true,
-        "first_name": "ZloiNiger",
-        "username": "ZloiNiger_bot"
-      },
-      "new_chat_member": {
-        "id": 891364201,
-        "is_bot": true,
-        "first_name": "ZloiNiger",
-        "username": "ZloiNiger_bot"
-      },
-      "new_chat_members": [
-        {
-          "id": 891364201,
-          "is_bot": true,
-          "first_name": "ZloiNiger",
-          "username": "ZloiNiger_bot"
-        }
-      ]
-    }
-  }
-]
+  "date": 1567368065,
+  "firstName": "Oleksandr",
+  "languageCode": "en",
+  "chatID": -366413611
+}

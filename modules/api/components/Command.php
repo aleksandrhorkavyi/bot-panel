@@ -38,7 +38,7 @@ class Command
 
     public function setChatID($message)
     {
-        $this->chatID = $message['chat']['id'] ?? null;
+        $this->chatID = (string)$message['chat']['id'] ?? null;
     }
 
     public function setText($message)
