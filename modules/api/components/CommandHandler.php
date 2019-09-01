@@ -46,7 +46,7 @@ class CommandHandler
 
     public function handle()
     {
-        if (empty($this->command->text) OR !in_array($this->command->text, $this->allowedCommands)) {
+        if (empty($this->command->text) OR empty($this->allowedCommands[$this->command->text])) {
             $this->answer = Json::encode($this->command);
             Yii::$app->telegram->sendMessage([
                 'chat_id' => $this->command->chatID,
