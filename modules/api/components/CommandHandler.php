@@ -48,7 +48,7 @@ class CommandHandler
     {
         Yii::$app->telegram->sendMessage([
             'chat_id' => $this->command->chatID,
-            'text' => '$this->answer',
+            'text' => Json::encode($this->command),
         ]);
         return false;
 

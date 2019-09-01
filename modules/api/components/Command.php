@@ -8,6 +8,8 @@ class Command
 {
     public $text = null;
 
+    public $message;
+
     public $date = null;
 
     public $firstName = null;
@@ -26,6 +28,7 @@ class Command
      */
     public function setAttributes($message)
     {
+        $this->message = $message;
         $this->setText($message);
         $this->setDate($message);
         $this->setFirstName($message);
