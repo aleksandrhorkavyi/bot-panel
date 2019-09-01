@@ -3,6 +3,7 @@
 namespace app\modules\api\components;
 
 use Yii;
+use yii\helpers\Json;
 
 class CommandHandler
 {
@@ -46,7 +47,7 @@ class CommandHandler
     public function handle()
     {
         if (empty($this->command->text) OR !in_array($this->command->text, $this->allowedCommands)) {
-            $this->answer = 'Undefined command';
+            $this->answer = Json::encode($this->command);
             Yii::$app->telegram->sendMessage([
                 'chat_id' => $this->command->chatID,
                 'text' => $this->answer,
