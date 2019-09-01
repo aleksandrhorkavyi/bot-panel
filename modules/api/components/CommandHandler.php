@@ -1,6 +1,6 @@
 <?php
 
-namespace app\components\telegram;
+namespace app\modules\api\components;
 
 class CommandHandler
 {
