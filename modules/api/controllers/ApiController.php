@@ -2,6 +2,7 @@
 
 namespace app\modules\api\controllers;
 
+use Yii;
 use yii\web\Controller;
 
 /**
