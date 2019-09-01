@@ -21,8 +21,6 @@ class CommandHandler
     public function __construct(Command $command)
     {
         $this->setCommand($command);
-
-        call_user_func_array([$this, 'sendMenu'], []);
     }
 
     public function sendMenu()
@@ -49,7 +47,6 @@ class CommandHandler
     {
         if (empty($this->command->text) OR !in_array($this->command->text, $this->allowedCommands)) {
             $this->answer = 'Undefined command';
-
             Yii::$app->telegram->sendMessage([
                 'chat_id' => $this->command->chatID,
                 'text' => $this->answer,
