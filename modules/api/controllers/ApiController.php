@@ -12,11 +12,13 @@ class ApiController extends Controller
 {
     public $enableCsrfValidation = false;
 
-    public function actionTokens()
+    public function actionHandleCommand()
     {
+        $body = Yii::$app->request->rawBody;
+
          Yii::$app->telegram->sendMessage([
             'chat_id' => '354632391',
-            'text' => 'test',
+            'text' => $body,
         ]);
 
         return $this->asJson(['status' => 'ok']);
