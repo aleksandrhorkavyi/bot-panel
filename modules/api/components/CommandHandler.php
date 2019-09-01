@@ -2,15 +2,23 @@
 
 namespace app\modules\api\components;
 
+use Yii;
+
 class CommandHandler
 {
     public $allowedCommands = [
-        '/menu' => 'sendMenu'
+        '/menu' => 'sendMenu',
+        '/mat' => 'sendMat'
     ];
 
+    /**
+     * @var Command
+     */
     private $command = null;
 
-    public function __construct(string $command)
+    private $answer = null;
+
+    public function __construct(Command $command)
     {
         $this->setCommand($command);
 
@@ -19,7 +27,37 @@ class CommandHandler
 
     public function sendMenu()
     {
-        var_dump(444);
+        $this->answer = 'Send menu';
+
+        Yii::$app->telegram->sendMessage([
+            'chat_id' => $this->command->chatID,
+            'text' => $this->answer,
+        ]);
+    }
+
+    public function sendMat()
+    {
+        $this->answer = 'Send mat';
+
+        Yii::$app->telegram->sendMessage([
+            'chat_id' => $this->command->chatID,
+            'text' => $this->answer,
+        ]);
+    }
+
+    public function handle()
+    {
+        if (empty($this->command->text) OR !in_array($this->command->text, $this->allowedCommands)) {
+            $this->answer = 'Undefined command';
+
+            Yii::$app->telegram->sendMessage([
+                'chat_id' => $this->command->chatID,
+                'text' => $this->answer,
+            ]);
+            return false;
+        }
+        call_user_func_array([$this, $this->allowedCommands[$this->command->text]], []);
+        return true;
     }
 
     /**
@@ -31,11 +69,10 @@ class CommandHandler
     }
 
     /**
-     * @param null $command
+     * @param $command
      */
     public function setCommand($command)
     {
         $this->command = $command;
     }
-
 }

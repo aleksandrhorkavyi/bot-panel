@@ -3,6 +3,7 @@
 namespace app\modules\api\controllers;
 
 use app\modules\api\components\Command;
+use app\modules\api\components\CommandHandler;
 use Yii;
 use yii\helpers\Json;
 use yii\web\Controller;
@@ -17,13 +18,9 @@ class ApiController extends Controller
     public function actionHandleCommand()
     {
         $body = Yii::$app->request->rawBody;
-
-        $content = new Command(Json::decode($body));
-
-         Yii::$app->telegram->sendMessage([
-            'chat_id' => '354632391',
-            'text' => Json::encode($content),
-        ]);
+        $command = new Command(Json::decode($body));
+        $handler = new CommandHandler($command);
+        $handler->handle();
 
         return $this->asJson(['status' => 'ok']);
     }
