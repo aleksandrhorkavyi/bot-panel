@@ -162,7 +162,7 @@ class PanelController extends Controller
         } elseif ($type == 'accepted') {
             TokenAccepted::deleteAll();
         }
-        
+
         return $this->redirect([
             "/panel/panel/{$type}"
         ]);

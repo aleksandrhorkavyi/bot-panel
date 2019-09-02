@@ -24,8 +24,16 @@ class CallbackHandler extends CommandHandler
         Yii::$app->telegram->answerCallbackQuery([
             'callback_query_id' => $this->getCommand()->callbackID,
             'text' => $this->answer,
-            'show_alert' => 'Ok',
+            'show_alert' => 'Okey.',
         ]);
+    }
+
+    public function __construct(Command $command)
+    {
+        parent::__construct($command);
+        $this->allowedCommands = [
+            'trash' => 'callbackTrash',
+        ];
     }
 
     /**
