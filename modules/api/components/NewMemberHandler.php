@@ -15,13 +15,11 @@ class NewMemberHandler extends CommandHandler
 {
     public function handle()
     {
-        $this->answer = 'Hi, bratishka!';
+        $this->answer = Yii::$app->params['settings']['hello_message'];
         Yii::$app->telegram->sendMessage([
             'chat_id' => $this->command->chatID,
             'text' => $this->answer,
         ]);
-
-        var_dump($this->answer);
     }
 
 }

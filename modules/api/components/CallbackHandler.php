@@ -19,15 +19,20 @@ class CallbackHandler extends CommandHandler
 
     public function callbackTrash()
     {
-        $this->answer = 'Okay.';
+        $this->answer = \Yii::$app->params['settings']['trash_message'];
         $this->saveCanceledToken();
         Yii::$app->telegram->answerCallbackQuery([
             'callback_query_id' => $this->getCommand()->callbackID,
             'text' => $this->answer,
-            'show_alert' => 'Okay.',
+            'show_alert' => 'Ok',
         ]);
     }
 
+    /**
+     * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     protected function saveCanceledToken()
     {
         $proto_id = $this->getCommand()->callbackData['token_id'];
@@ -36,10 +41,10 @@ class CallbackHandler extends CommandHandler
             $token = new TokenCanceled(['value' => $tokenPrototype->value]);
             $token->save();
             $tokenPrototype->delete();
-            $this->answer = 'Canceled.';
+            $this->answer = \Yii::$app->params['settings']['trash_message'];
             return true;
         }
-        $this->answer = 'Already canceled.';
+        $this->answer = \Yii::$app->params['settings']['trash_message_already'];
     }
 
 }

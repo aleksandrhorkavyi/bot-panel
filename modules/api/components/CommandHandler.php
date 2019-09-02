@@ -24,6 +24,14 @@ class CommandHandler
 
     public function __construct(Command $command)
     {
+        $settingsCommands = explode(',', Yii::$app->params['settings']['commands']);
+        if (count($settingsCommands) > 0) {
+            $this->allowedCommands = [];
+            foreach ($settingsCommands as $settingsCommand) {
+                $this->allowedCommands[$settingsCommand] = 'runMatCommand';
+            }
+        }
+
         $this->setCommand($command);
     }
 

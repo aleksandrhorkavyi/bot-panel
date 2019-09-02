@@ -1,5 +1,7 @@
 <?php
 
+use app\components\Settings;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -7,7 +9,7 @@ $config = [
     'id' => 'basic',
     'name' => 'BotPanel',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'settings'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -21,10 +23,13 @@ $config = [
         ],
     ],
     'components' => [
+        'settings' => [
+            'class' => Settings::class
+        ],
         'telegram' => [
             'class' => 'aki\telegram\Telegram',
             // PROLOG
-            'botToken' => '891364201:AAEhZu9km71gRW6q1nrJpUgF_qQ7YiCNROg',
+            'botToken' => \Yii::$app->params['settings']['bot_token'],
         ],
         'formatter' => [
             'datetimeFormat' => 'php:Y-m-d H:i:s',
