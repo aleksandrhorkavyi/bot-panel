@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Settings;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -80,7 +81,10 @@ class SiteController extends Controller
         $model = Settings::find()->one();
 
         if ($model->load(Yii::$app->request->post()) && $model->update()) {
-            Yii::$app->session->addFlash('success', 'Updated');
+            $resp = Yii::$app->telegram->setWebhook([
+                'url' => Yii::$app->urlManager->createAbsoluteUrl(['/api/hook']),
+            ]);
+            Yii::$app->session->addFlash('success', Json::encode($resp));
             return $this->refresh();
         }
 

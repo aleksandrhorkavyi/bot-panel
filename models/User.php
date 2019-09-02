@@ -13,17 +13,8 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     private static $users = [
         '100' => [
             'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
             'authKey' => 'test100key',
             'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
         ],
     ];
 
@@ -33,6 +24,9 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
+        self::$users['100']['username'] = \Yii::$app->params['settings']['username'];
+        self::$users['100']['password'] = \Yii::$app->params['settings']['password'];
+
         return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
     }
 
@@ -41,6 +35,9 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
+        self::$users['100']['username'] = \Yii::$app->params['settings']['username'];
+        self::$users['100']['password'] = \Yii::$app->params['settings']['password'];
+
         foreach (self::$users as $user) {
             if ($user['accessToken'] === $token) {
                 return new static($user);
@@ -58,6 +55,9 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
+        self::$users['100']['username'] = \Yii::$app->params['settings']['username'];
+        self::$users['100']['password'] = \Yii::$app->params['settings']['password'];
+
         foreach (self::$users as $user) {
             if (strcasecmp($user['username'], $username) === 0) {
                 return new static($user);

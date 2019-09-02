@@ -31,8 +31,8 @@ class Settings extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bot_token', 'commands', 'hello_message', 'empty_message', 'trash_message'], 'required'],
-            [['bot_token', 'commands', 'hello_message', 'empty_message', 'trash_message', 'trash_message_already'], 'string', 'max' => 255],
+            [['bot_token', 'commands', 'hello_message', 'empty_message', 'trash_message', 'password', 'username'], 'required'],
+            [['bot_token', 'commands', 'hello_message', 'empty_message', 'trash_message', 'trash_message_already','password', 'username'], 'string', 'max' => 255],
         ];
     }
 

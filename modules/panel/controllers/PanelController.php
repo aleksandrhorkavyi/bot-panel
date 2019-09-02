@@ -86,7 +86,8 @@ class PanelController extends Controller
         return $this->render('grid-view', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'withFileInput' => false
+            'withFileInput' => false,
+            'model' => null
         ]);
     }
 
@@ -98,7 +99,8 @@ class PanelController extends Controller
         return $this->render('grid-view', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'withFileInput' => false
+            'withFileInput' => false,
+            'model' => null
         ]);
     }
 

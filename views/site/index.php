@@ -20,6 +20,9 @@ $this->title = 'Bot panel';
     <?= $form->field($model, 'empty_message')->textInput(); ?>
     <?= $form->field($model, 'trash_message')->textInput(); ?>
     <?= $form->field($model, 'trash_message_already')->textInput(); ?>
+    <hr>
+    <?= $form->field($model, 'username')->textInput(['autocomplete' => 'off']); ?>
+    <?= $form->field($model, 'password')->passwordInput(['autocomplete' => 'off']); ?>
 
     <div class="form-group">
         <?= Html::button('Update', ['type' => 'submit', 'class' => 'btn btn-success'])?>
