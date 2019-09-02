@@ -42,6 +42,7 @@ AppAsset::register($this);
 
             ['label' => 'Active', 'url' => ['/panel/panel/active'], 'visible' => !Yii::$app->user->isGuest],
             ['label' => 'Canceled', 'url' => ['/panel/panel/canceled'], 'visible' => !Yii::$app->user->isGuest],
+            ['label' => 'Accepted', 'url' => ['/panel/panel/accepted'], 'visible' => !Yii::$app->user->isGuest],
 
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]

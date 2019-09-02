@@ -2,6 +2,7 @@
 
 namespace app\modules\panel\models\search;
 
+use app\modules\panel\models\TokenAccepted;
 use app\modules\panel\models\TokenCanceled;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -64,5 +65,14 @@ class TokenSearch extends TokenActive
     public function searchCanceled($params)
     {
         return $this->getActiveDataProvider(TokenCanceled::find(), $params);
+    }
+
+    /**
+     * @param $params
+     * @return ActiveDataProvider
+     */
+    public function searchAccepted($params)
+    {
+        return $this->getActiveDataProvider(TokenAccepted::find(), $params);
     }
 }

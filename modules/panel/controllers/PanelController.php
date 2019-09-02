@@ -32,15 +32,15 @@ class PanelController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['active', 'canceled', 'file-upload', 'file-validate', 'delete'],
+                'only' => ['active', 'accepted', 'canceled', 'file-upload', 'file-validate', 'delete'],
                 'rules' => [
                     [
-                        'actions' => ['active', 'canceled', 'file-upload', 'file-validate', 'delete'],
+                        'actions' => ['active', 'accepted', 'canceled', 'file-upload', 'file-validate', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['active', 'canceled', 'file-upload', 'file-validate', 'delete'],
+                        'actions' => ['active', 'accepted', 'canceled', 'file-upload', 'file-validate', 'delete'],
                         'allow' => false,
                         'roles' => ['?'],
                         'denyCallback' => function($rule, $action) {
@@ -80,6 +80,18 @@ class PanelController extends Controller
     {
         $searchModel = new TokenSearch();
         $dataProvider = $searchModel->searchCanceled(Yii::$app->request->queryParams);
+
+        return $this->render('grid-view', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'withFileInput' => false
+        ]);
+    }
+
+    public function actionAccepted()
+    {
+        $searchModel = new TokenSearch();
+        $dataProvider = $searchModel->searchAccepted(Yii::$app->request->queryParams);
 
         return $this->render('grid-view', [
             'searchModel' => $searchModel,
