@@ -27,10 +27,17 @@ class CommandHandler
     public function sendMenu()
     {
         $this->answer = 'Send menu';
-
+        
         Yii::$app->telegram->sendMessage([
             'chat_id' => $this->command->chatID,
             'text' => $this->answer,
+            'reply_markup' => json_encode([
+                'inline_keyboard'=>[
+                    [
+                        ['text'=>"refresh",'callback_data'=> time()]
+                    ]
+                ]
+            ]),
         ]);
     }
 
