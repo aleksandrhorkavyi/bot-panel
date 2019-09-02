@@ -12,6 +12,8 @@ class Command
 
     const TYPE_CALLBACK_QUERY = 'callback_query';
 
+    const TYPE_NEW_MEMBER = 'new_member';
+
     public $text = null;
 
     public $message;
@@ -33,7 +35,10 @@ class Command
 
     public function __construct(array $data)
     {
-        if (isset($data['message'])) {
+        if (isset($data['message']['new_chat_participant']) OR isset($data['message']['new_chat_member'])) {
+            $this->setCommandAttributes($data['message']);
+            $this->type = self::TYPE_NEW_MEMBER;
+        } elseif (isset($data['message'])) {
             $this->setCommandAttributes($data['message']);
         } elseif (isset($data['callback_query'])) {
             $this->setCallbackAttributes($data['callback_query']);
@@ -54,7 +59,7 @@ class Command
     public function setCommandAttributes($message)
     {
         $this->message = $message;
-        $this->text = mb_strtolower($message['text']);
+        $this->text = mb_strtolower($message['text'] ?? null);
         $this->firstName = $message['from']['first_name'] ?? null;
         $this->languageCode = $message['from']['language_code'] ?? 'en';
         $this->chatID = (string)$message['chat']['id'] ?? null;

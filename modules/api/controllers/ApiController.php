@@ -5,6 +5,7 @@ namespace app\modules\api\controllers;
 use app\modules\api\components\CallbackHandler;
 use app\modules\api\components\Command;
 use app\modules\api\components\CommandHandler;
+use app\modules\api\components\NewMemberHandler;
 use Yii;
 use yii\helpers\Json;
 use yii\web\Controller;
@@ -22,8 +23,10 @@ class ApiController extends Controller
         $command = new Command(Json::decode($body));
         if ($command->type === Command::TYPE_TEXT_MESSAGE) {
             $handler = new CommandHandler($command);
-        } else {
+        } elseif ($command->type === Command::TYPE_CALLBACK_QUERY) {
             $handler = new CallbackHandler($command);
+        } elseif ($command->type === Command::TYPE_NEW_MEMBER) {
+            $handler = new NewMemberHandler($command);
         }
         $handler->handle();
 
@@ -45,8 +48,10 @@ class ApiController extends Controller
                 $command = new Command($message);
                 if ($command->type === Command::TYPE_TEXT_MESSAGE) {
                     $handler = new CommandHandler($command);
-                } else {
+                } elseif ($command->type === Command::TYPE_CALLBACK_QUERY) {
                     $handler = new CallbackHandler($command);
+                } elseif ($command->type === Command::TYPE_NEW_MEMBER) {
+                    $handler = new NewMemberHandler($command);
                 }
                 var_dump($message);
                 var_dump($command);
@@ -57,7 +62,7 @@ class ApiController extends Controller
 
             return $this->asJson(['status' => 'ok']);
         }
-        Yii::$app->session->set('bot_update_id', 637453435);
+        Yii::$app->session->set('bot_update_id', 637453540);
         return $this->asJson(['status' => 'fail']);
     }
 }
