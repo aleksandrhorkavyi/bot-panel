@@ -25,7 +25,6 @@ class CallbackHandler extends CommandHandler
             'callback_query_id' => $this->getCommand()->callbackID,
             'text' => $this->answer,
             'show_alert' => 'Okay.',
-            'cache_time' => 123231,
         ]);
     }
 
