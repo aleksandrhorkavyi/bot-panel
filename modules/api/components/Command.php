@@ -4,6 +4,8 @@
 namespace app\modules\api\components;
 
 
+use yii\helpers\Json;
+
 class Command
 {
     const TYPE_TEXT_MESSAGE = 'text_message';
@@ -21,6 +23,8 @@ class Command
     public $chatID = null;
 
     public $callbackID = null;
+
+    public $callbackData = null;
 
     public $isCommand = false;
 
@@ -40,6 +44,7 @@ class Command
     {
         $this->type = self::TYPE_CALLBACK_QUERY;
         $this->callbackID = $callback['id'];
+        $this->callbackData = Json::decode($callback['data']);
         $this->setCommandAttributes($callback['message']);
     }
 
@@ -49,8 +54,7 @@ class Command
     public function setCommandAttributes($message)
     {
         $this->message = $message;
-        $this->text = $message['text'] ?? null;
-        $this->text = $message['text'] ?? null;
+        $this->text = mb_strtolower($message['text']);
         $this->firstName = $message['from']['first_name'] ?? null;
         $this->languageCode = $message['from']['language_code'] ?? 'en';
         $this->chatID = (string)$message['chat']['id'] ?? null;

@@ -2,14 +2,15 @@
 
 namespace app\modules\api\components;
 
+use app\modules\panel\models\TokenActive;
 use Yii;
 use yii\helpers\Json;
 
 class CommandHandler
 {
     public $allowedCommands = [
-        '/menu' => 'sendMenu',
-        '/mat' => 'sendMat'
+        'мат' => 'runMatCommand',
+        'не раб' => 'runMatCommand',
     ];
 
     /**
@@ -24,9 +25,10 @@ class CommandHandler
         $this->setCommand($command);
     }
 
-    public function sendMenu()
+
+    public function runMatCommand()
     {
-        $this->answer = 'trash';
+        $this->answer = $this->getNextToken()->value;
 
         Yii::$app->telegram->sendMessage([
             'chat_id' => $this->command->chatID,
@@ -34,26 +36,42 @@ class CommandHandler
             'reply_markup' => json_encode([
                 'inline_keyboard'=>[
                     [
-                        ['text'=>"Trash",'callback_data'=> time()]
+                        [
+                            'text'=> 'trash',
+                            'callback_data'=> Json::encode([
+                                'key' => 'trash',
+                                'token' => $this->answer
+                            ])
+                        ],
                     ]
                 ]
             ]),
         ]);
     }
 
-    public function sendMat()
-    {
-        $this->answer = 'Trash';
 
-        Yii::$app->telegram->sendMessage([
-            'chat_id' => $this->command->chatID,
-            'text' => $this->answer,
-        ]);
+    /**
+     * @return TokenActive
+     */
+    public function getNextToken(): TokenActive
+    {
+        $nextToken = TokenActive::find()->orderBy(['id' => SORT_ASC])->one();
+        if ($nextToken) {
+            $token = clone $nextToken;
+            $nextToken->delete();
+        } else {
+            $token = new TokenActive(['value' => 'I am empty :(']);
+        }
+
+        return $token;
     }
 
     public function handle()
     {
-        if (empty($this->allowedCommands[$this->command->text])) {
+        $key = ($this->getCommand()->type === Command::TYPE_CALLBACK_QUERY) ?
+            $this->getCommand()->callbackData['key'] : $this->getCommand()->text;
+
+        if (empty($this->allowedCommands[$key])) {
             $this->answer = 'Undefined command';
             Yii::$app->telegram->sendMessage([
                 'chat_id' => $this->command->chatID,
@@ -61,7 +79,7 @@ class CommandHandler
             ]);
             return false;
         }
-        call_user_func_array([$this, $this->allowedCommands[$this->command->text]], []);
+        call_user_func_array([$this, $this->allowedCommands[$key]], []);
         return true;
     }
 

@@ -11,6 +11,7 @@ use Yii;
 use yii\bootstrap\ActiveForm;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
@@ -29,6 +30,26 @@ class PanelController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['active', 'canceled', 'file-upload', 'file-validate', 'delete'],
+                'rules' => [
+                    [
+                        'actions' => ['active', 'canceled', 'file-upload', 'file-validate', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['active', 'canceled', 'file-upload', 'file-validate', 'delete'],
+                        'allow' => false,
+                        'roles' => ['?'],
+                        'denyCallback' => function($rule, $action) {
+                            return $action->controller->redirect('/site/login');
+                        },
+                    ]
+                ],
+            ],
+
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

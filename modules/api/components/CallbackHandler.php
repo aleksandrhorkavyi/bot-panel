@@ -3,6 +3,7 @@
 
 namespace app\modules\api\components;
 
+use app\modules\panel\models\TokenCanceled;
 use Yii;
 
 /**
@@ -17,28 +18,28 @@ class CallbackHandler extends CommandHandler
 
     public function callbackTrash()
     {
-        $this->answer = 'callbackTrash';
+        $this->answer = 'Okay.';
+        $this->saveCanceledToken();
+        $token = new TokenCanceled();
+        $token->value = $this->getCommand()->callbackData['token'];
+        $token->save();
 
         Yii::$app->telegram->answerCallbackQuery([
             'callback_query_id' => $this->getCommand()->callbackID,
             'text' => $this->answer,
-            'show_alert' => 'my alert',  //Optional
-//            'url' => 'http://sample.com', //Optional
-//            'cache_time' => 123231,  //Optional
+            'show_alert' => 'Okay.',
+            'cache_time' => 123231,
         ]);
     }
 
-//    public function handle()
-//    {
-//        if (empty($this->allowedCommands[$this->command->text])) {
-//            $this->answer = 'Undefined callback';
-//            Yii::$app->telegram->sendMessage([
-//                'chat_id' => $this->command->chatID,
-//                'text' => $this->answer,
-//            ]);
-//            return false;
-//        }
-//        call_user_func_array([$this, $this->allowedCommands[$this->command->text]], []);
-//        return true;
-//    }
+    protected function saveCanceledToken()
+    {
+        $value = $this->getCommand()->callbackData['token'];
+        if (!TokenCanceled::find(['value' => $value])->exists()) {
+            $token = new TokenCanceled(['value' => $value]);
+            $token->save();
+        }
+        $this->answer = 'Already canceled.';
+    }
+
 }

@@ -20,7 +20,11 @@ class ApiController extends Controller
     {
         $body = Yii::$app->request->rawBody;
         $command = new Command(Json::decode($body));
-        $handler = new CommandHandler($command);
+        if ($command->type === Command::TYPE_TEXT_MESSAGE) {
+            $handler = new CommandHandler($command);
+        } else {
+            $handler = new CallbackHandler($command);
+        }
         $handler->handle();
 
         return $this->asJson(['status' => 'ok']);
@@ -53,6 +57,7 @@ class ApiController extends Controller
 
             return $this->asJson(['status' => 'ok']);
         }
+        Yii::$app->session->set('bot_update_id', 637453435);
         return $this->asJson(['status' => 'fail']);
     }
 }
