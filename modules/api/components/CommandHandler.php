@@ -15,9 +15,9 @@ class CommandHandler
     /**
      * @var Command
      */
-    private $command = null;
+    protected $command = null;
 
-    private $answer = null;
+    protected $answer = null;
 
     public function __construct(Command $command)
     {
@@ -26,15 +26,15 @@ class CommandHandler
 
     public function sendMenu()
     {
-        $this->answer = 'Send menu';
-        
+        $this->answer = 'trash';
+
         Yii::$app->telegram->sendMessage([
             'chat_id' => $this->command->chatID,
             'text' => $this->answer,
             'reply_markup' => json_encode([
                 'inline_keyboard'=>[
                     [
-                        ['text'=>"refresh",'callback_data'=> time()]
+                        ['text'=>"Trash",'callback_data'=> time()]
                     ]
                 ]
             ]),
@@ -43,7 +43,7 @@ class CommandHandler
 
     public function sendMat()
     {
-        $this->answer = 'Send mat';
+        $this->answer = 'Trash';
 
         Yii::$app->telegram->sendMessage([
             'chat_id' => $this->command->chatID,
@@ -66,7 +66,7 @@ class CommandHandler
     }
 
     /**
-     * @return null
+     * @return Command
      */
     public function getCommand()
     {

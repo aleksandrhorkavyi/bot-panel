@@ -6,11 +6,13 @@ namespace app\modules\api\components;
 
 class Command
 {
+    const TYPE_TEXT_MESSAGE = 'text_message';
+
+    const TYPE_CALLBACK_QUERY = 'callback_query';
+
     public $text = null;
 
     public $message;
-
-    public $date = null;
 
     public $firstName = null;
 
@@ -18,46 +20,42 @@ class Command
 
     public $chatID = null;
 
+    public $callbackID = null;
+
+    public $isCommand = false;
+
+
+    public $type = self::TYPE_TEXT_MESSAGE;
+
     public function __construct(array $data)
     {
-        $this->setAttributes($data['message']);
+        if (isset($data['message'])) {
+            $this->setCommandAttributes($data['message']);
+        } elseif (isset($data['callback_query'])) {
+            $this->setCallbackAttributes($data['callback_query']);
+        }
+    }
+
+    public function setCallbackAttributes($callback)
+    {
+        $this->type = self::TYPE_CALLBACK_QUERY;
+        $this->callbackID = $callback['id'];
+        $this->setCommandAttributes($callback['message']);
     }
 
     /**
      * @param array $data
      */
-    public function setAttributes($message)
+    public function setCommandAttributes($message)
     {
         $this->message = $message;
-        $this->setText($message);
-        $this->setDate($message);
-        $this->setFirstName($message);
-        $this->setLanguageCode($message);
-        $this->setChatID($message);
-    }
-
-    public function setChatID($message)
-    {
-        $this->chatID = (string)$message['chat']['id'] ?? null;
-    }
-
-    public function setText($message)
-    {
         $this->text = $message['text'] ?? null;
-    }
-
-    public function setDate($message)
-    {
-        $this->date = $message['date'] ?? null;
-    }
-
-    public function setFirstName($message)
-    {
+        $this->text = $message['text'] ?? null;
         $this->firstName = $message['from']['first_name'] ?? null;
+        $this->languageCode = $message['from']['language_code'] ?? 'en';
+        $this->chatID = (string)$message['chat']['id'] ?? null;
+        $this->isCommand = (!empty($message['entities'][0]['type']) AND
+            $message['entities'][0]['type'] === 'bot_command') ? true : false;
     }
 
-    public function setLanguageCode($message)
-    {
-        $this->languageCode = $message['from']['language_code'] ?? 'en';
-    }
 }
