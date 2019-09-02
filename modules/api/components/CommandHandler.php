@@ -31,32 +31,40 @@ class CommandHandler
     public function runMatCommand()
     {
         $nextToken = $this->getNextToken();
-        $this->answer = $nextToken->value;
-
-        Yii::$app->telegram->sendMessage([
-            'chat_id' => $this->command->chatID,
-            'text' => $this->answer,
-            'reply_markup' => json_encode([
-                'inline_keyboard'=>[
-                    [
+        if ($nextToken) {
+            $this->answer = $nextToken->value;
+            Yii::$app->telegram->sendMessage([
+                'chat_id' => $this->command->chatID,
+                'text' => $this->answer,
+                'reply_markup' => json_encode([
+                    'inline_keyboard' => [
                         [
-                            'text'=> 'trash',
-                            'callback_data'=> Json::encode([
-                                'key' => 'trash',
-                                'token_id' => $nextToken->id
-                            ])
-                        ],
+                            [
+                                'text' => 'trash',
+                                'callback_data' => Json::encode([
+                                    'key' => 'trash',
+                                    'token_id' => $nextToken->proto_id
+                                ])
+                            ],
+                        ]
                     ]
-                ]
-            ]),
-        ]);
+                ]),
+            ]);
+        } else {
+            Yii::$app->telegram->sendMessage([
+                'chat_id' => $this->command->chatID,
+                'text' => $this->answer,
+            ]);
+        }
     }
 
 
     /**
-     * @return TokenActive
+     * @return TokenAccepted|TokenActive
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
-    public function getNextToken(): ActiveRecord
+    public function getNextToken()
     {
         $nextToken = TokenActive::find()->orderBy(['id' => SORT_ASC])->one();
         if ($nextToken) {
@@ -67,7 +75,8 @@ class CommandHandler
             $token->save();
             $nextToken->delete();
         } else {
-            $token = new TokenActive(['value' => 'I am empty :(']);
+            $this->answer = 'Я полностью опустошен :(';
+            return false;
         }
 
         return $token;
