@@ -14,7 +14,7 @@ $this->title = 'Bot panel';
     <h2>Bot settings</h2>
     <?php $form = ActiveForm::begin(['id' => 'settings-form'])?>
 
-    <?= $form->field($model, 'bot_token')->textInput(); ?>
+    <?php // $form->field($model, 'bot_token')->textInput(); ?>
     <?= $form->field($model, 'commands')->textInput(); ?>
     <?= $form->field($model, 'hello_message')->textInput(); ?>
     <?= $form->field($model, 'empty_message')->textInput(); ?>

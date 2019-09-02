@@ -25,6 +25,7 @@ class CommandHandler
     public function __construct(Command $command)
     {
         $settingsCommands = explode(',', Yii::$app->params['settings']['commands']);
+
         if (count($settingsCommands) > 0) {
             $this->allowedCommands = [];
             foreach ($settingsCommands as $settingsCommand) {
@@ -83,7 +84,7 @@ class CommandHandler
             $token->save();
             $nextToken->delete();
         } else {
-            $this->answer = 'Я полностью опустошен :(';
+            $this->answer = Yii::$app->params['settings']['empty_message'];
             return false;
         }
 

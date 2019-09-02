@@ -42,6 +42,7 @@ class ApiController extends Controller
                 'limit' => 10,
                 'timeout' => 5,
             ]);
+
             $data = Json::decode(Json::encode($response));
 
             foreach ($data['result'] as $message) {
