@@ -5,6 +5,7 @@ namespace app\modules\api\components;
 use app\modules\panel\models\TokenAccepted;
 use app\modules\panel\models\TokenActive;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
 class CommandHandler
@@ -55,7 +56,7 @@ class CommandHandler
     /**
      * @return TokenActive
      */
-    public function getNextToken(): TokenActive
+    public function getNextToken(): ActiveRecord
     {
         $nextToken = TokenActive::find()->orderBy(['id' => SORT_ASC])->one();
         if ($nextToken) {
