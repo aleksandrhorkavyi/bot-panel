@@ -88,12 +88,12 @@ class CommandHandler
             $this->getCommand()->callbackData['key'] : $this->getCommand()->text;
 
         if (empty($this->allowedCommands[$key])) {
-            $this->answer = 'Undefined command';
-            Yii::$app->telegram->sendMessage([
-                'chat_id' => $this->command->chatID,
-                'text' => $this->answer,
-            ]);
-            return false;
+//            $this->answer = 'Undefined command';
+//            Yii::$app->telegram->sendMessage([
+//                'chat_id' => $this->command->chatID,
+//                'text' => $this->answer,
+//            ]);
+            return true;
         }
         call_user_func_array([$this, $this->allowedCommands[$key]], []);
         return true;

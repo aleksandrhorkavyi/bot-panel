@@ -36,6 +36,9 @@ class CallbackHandler extends CommandHandler
         if ($tokenPrototype = TokenAccepted::findOne(['proto_id' => $proto_id])) {
             $token = new TokenCanceled(['value' => $tokenPrototype->value]);
             $token->save();
+            $tokenPrototype->delete();
+            $this->answer = 'Canceled.';
+            return true;
         }
         $this->answer = 'Already canceled.';
     }
