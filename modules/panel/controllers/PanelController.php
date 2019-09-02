@@ -4,6 +4,7 @@ namespace app\modules\panel\controllers;
 
 use app\modules\panel\models\form\UploadForm;
 use app\modules\panel\models\search\TokenSearch;
+use app\modules\panel\models\TokenAccepted;
 use app\modules\panel\models\TokenActive;
 use app\modules\panel\models\TokenCanceled;
 use SplFileObject;
@@ -141,6 +142,7 @@ class PanelController extends Controller
         $types = [
             'active' => TokenActive::find(),
             'canceled' => TokenCanceled::find(),
+            'accepted' => TokenAccepted::find(),
         ];
         $model = $types[$type]->where(['id' => $id])->one();
         $model->delete();
