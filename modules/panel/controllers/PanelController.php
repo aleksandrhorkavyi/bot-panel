@@ -33,10 +33,10 @@ class PanelController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['active', 'accepted', 'canceled', 'file-upload', 'file-validate', 'delete'],
+                'only' => ['active', 'accepted', 'canceled', 'file-upload', 'file-validate', 'delete', 'delete-all'],
                 'rules' => [
                     [
-                        'actions' => ['active', 'accepted', 'canceled', 'file-upload', 'file-validate', 'delete'],
+                        'actions' => ['active', 'accepted', 'canceled', 'file-upload', 'file-validate', 'delete', 'delete-all'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -55,6 +55,7 @@ class PanelController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+//                    'delete-all' => ['POST'],
                 ],
             ],
         ];
@@ -147,6 +148,21 @@ class PanelController extends Controller
         $model = $types[$type]->where(['id' => $id])->one();
         $model->delete();
 
+        return $this->redirect([
+            "/panel/panel/{$type}"
+        ]);
+    }
+
+    public function actionDeleteAll($type)
+    {
+        if ($type == 'active') {
+            TokenActive::deleteAll();
+        } elseif ($type == 'canceled') {
+            TokenCanceled::deleteAll();
+        } elseif ($type == 'accepted') {
+            TokenAccepted::deleteAll();
+        }
+        
         return $this->redirect([
             "/panel/panel/{$type}"
         ]);

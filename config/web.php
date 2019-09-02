@@ -1,5 +1,6 @@
 <?php
 
+use app\components\Telegram;
 use app\components\Settings;
 
 $params = require __DIR__ . '/params.php';
@@ -27,9 +28,9 @@ $config = [
             'class' => Settings::class
         ],
         'telegram' => [
-            'class' => 'aki\telegram\Telegram',
+            'class' => Telegram::class,
             // PROLOG
-            'botToken' => '891364201:AAEhZu9km71gRW6q1nrJpUgF_qQ7YiCNROg',
+//            'botToken' => '891364201:AAEhZu9km71gRW6q1nrJpUgF_qQ7YiCNROg',
         ],
         'formatter' => [
             'datetimeFormat' => 'php:Y-m-d H:i:s',

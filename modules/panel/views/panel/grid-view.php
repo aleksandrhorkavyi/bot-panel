@@ -24,6 +24,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <hr/><hr/><hr/><hr/>
     </div>
     <div id="uploaded-data"></div>
+    <div style="float: right; margin-bottom: 4px;">
+        <?= Html::a('Delete all', ['delete-all', 'type' => Yii::$app->controller->action->id], [
+            'class' => 'btn btn-warning',
+            'data-method' => 'post',
+            'data-confirm' => 'Are You sure?'
+        ])?>
+    </div>
     <?php Pjax::begin(['id' => 'pjax-container']); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
