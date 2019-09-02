@@ -2,6 +2,7 @@
 
 namespace app\modules\api\components;
 
+use app\modules\panel\models\TokenAccepted;
 use app\modules\panel\models\TokenActive;
 use Yii;
 use yii\helpers\Json;
@@ -28,7 +29,8 @@ class CommandHandler
 
     public function runMatCommand()
     {
-        $this->answer = $this->getNextToken()->value;
+        $nextToken = $this->getNextToken();
+        $this->answer = $nextToken->value;
 
         Yii::$app->telegram->sendMessage([
             'chat_id' => $this->command->chatID,
@@ -40,7 +42,7 @@ class CommandHandler
                             'text'=> 'trash',
                             'callback_data'=> Json::encode([
                                 'key' => 'trash',
-                                'token' => $this->answer
+                                'token_id' => $nextToken->id
                             ])
                         ],
                     ]
@@ -57,7 +59,11 @@ class CommandHandler
     {
         $nextToken = TokenActive::find()->orderBy(['id' => SORT_ASC])->one();
         if ($nextToken) {
-            $token = clone $nextToken;
+            $token = new TokenAccepted([
+                'proto_id' => $nextToken->id,
+                'value' => $nextToken->value
+            ]);
+            $token->save();
             $nextToken->delete();
         } else {
             $token = new TokenActive(['value' => 'I am empty :(']);

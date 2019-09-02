@@ -3,6 +3,7 @@
 
 namespace app\modules\api\components;
 
+use app\modules\panel\models\TokenAccepted;
 use app\modules\panel\models\TokenCanceled;
 use Yii;
 
@@ -20,10 +21,6 @@ class CallbackHandler extends CommandHandler
     {
         $this->answer = 'Okay.';
         $this->saveCanceledToken();
-        $token = new TokenCanceled();
-        $token->value = $this->getCommand()->callbackData['token'];
-        $token->save();
-
         Yii::$app->telegram->answerCallbackQuery([
             'callback_query_id' => $this->getCommand()->callbackID,
             'text' => $this->answer,
@@ -34,9 +31,10 @@ class CallbackHandler extends CommandHandler
 
     protected function saveCanceledToken()
     {
-        $value = $this->getCommand()->callbackData['token'];
-        if (!TokenCanceled::find(['value' => $value])->exists()) {
-            $token = new TokenCanceled(['value' => $value]);
+        $proto_id = $this->getCommand()->callbackData['token_id'];
+
+        if ($tokenPrototype = TokenAccepted::findOne(['proto_id' => $proto_id])) {
+            $token = new TokenCanceled(['value' => $tokenPrototype->value]);
             $token->save();
         }
         $this->answer = 'Already canceled.';
